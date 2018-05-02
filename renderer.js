@@ -6,6 +6,15 @@ const os = require('os').platform();
 // const fs = require('graceful-fs');
 fixPath();
 
+// Give us f12 and f5 to load devTools and Reload (Do this early in case something else spawns an error)
+document.addEventListener("keydown", function (e) {
+    if (e.which === 123) {
+        window.toggleDevTools();
+    } else if (e.which === 116) {
+        location.reload();
+    }
+});
+
 let userPath = '~';
 
 function installBrew (cb) {
