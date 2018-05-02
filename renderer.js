@@ -135,7 +135,7 @@ function pipInstall (cb) {
 
 
 function npmInstall (cb) {
-	exec(`cd ${userPath} && cd redash-master && npm install && npm run build`, (err, stdout, stderr) => {
+	exec(`cd ${userPath} && cd redash-master && npm install && npm i -g webpack-dev-server && npm run build`, (err, stdout, stderr) => {
         if (stderr) console.log('stderr', stderr);
 
         console.log('Reinstalled npm packages', stdout);
@@ -172,7 +172,8 @@ function checkNPM (cb) {
 	exec('npm -v', (err, stdout, stderr) => {
 		if (stderr) installNode(function () {
 			if (cb && typeof cb === 'function') cb();
-		})
+		});
+        else if (cb && typeof cb === 'function') cb();
 	});
 }
 
@@ -183,6 +184,7 @@ function checkNode (cb) {
 		if (stderr) installNode(function () {
 			if (cb && typeof cb === 'function') cb();
 		});
+		else if (cb && typeof cb === 'function') cb();
 	});
 }
 
@@ -245,7 +247,7 @@ exec('cd ~ && pwd', (err, stdout, stderr) => {
 	if (stdout) userPath = stdout.trim().replace('\n', '');
 
 	console.log('Userpath:', userPath)
-	
+
 	// https://redash.io/help/open-source/dev-guide/setup
 
 	// Check for all of the things
