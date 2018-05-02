@@ -121,9 +121,7 @@ function installVirtualEnv (cb) {
             exec(`pip install virtualenv`, (err, stdout, stderr) => {
                 console.log('Installed VirtualEnv', stdout);
             });
-        }
-
-        if (cb && typeof cb === 'function') cb();
+        } else if (cb && typeof cb === 'function') cb();
     });
 }
 
@@ -132,7 +130,7 @@ function writeDotEnv (cb) {
     fs.writeFileSync(userPath + '/redash-master/.env', "REDASH_COOKIE_SECRET=verysecretkey\nREDASH_DATABASE_URL=postgresql://postgres@127.0.0.1/postgres\nREDASH_REDIS_URL=redis://127.0.0.1:6379/0", function (err) {
         if (err) console.error(err);
 
-        console.log('Updated .env file: ', userPath + '/redash-master/.env');
+        console.log('Updated .env file');
 
         if (cb && typeof cb === 'function') cb();
     });
@@ -144,22 +142,23 @@ function brewUpdate (cb) {
         if (stderr) console.log('stderr', stderr);
 
         console.log('Updated Brew', stdout);
-	});
 
-	if (cb && typeof cb === 'function') cb();
+        if (cb && typeof cb === 'function') cb();
+	});
 }
 
 
 function pipInstall (cb) {
+	console.log('Pip install');
     $('h5').html('Installing Redash');
 
 	exec(`cd ${userPath} && cd redash-master && virtualenv env && source env/bin/activate && pip install -r requirements.txt -r requirements_dev.txt`, (err, stdout, stderr) => {
 		if (stderr) console.log('stderr', stderr);
 
 		console.log('Reinstalled pip requirements', stdout);
-	});
 
-	if (cb && typeof cb === 'function') cb();
+        if (cb && typeof cb === 'function') cb();
+	});
 }
 
 
@@ -168,9 +167,9 @@ function npmInstall (cb) {
         if (stderr) console.log('stderr', stderr);
 
         console.log('Reinstalled npm packages', stdout);
-	});
 
-	if (cb && typeof cb === 'function') cb();
+        if (cb && typeof cb === 'function') cb();
+	});
 }
 
 
@@ -179,9 +178,9 @@ function initialSetup (cb) {
 
 	exec(`cd ${userPath} && cd redash-master && bin/run ./manage.py check_settings && bin/run ./manage.py database create_tables`, (err, stdout, stderr) => {
 		console.log('Initial Settings setup and database bootstrap', stdout);
-	});
 
-	if (cb && typeof cb === 'function') cb();
+        if (cb && typeof cb === 'function') cb();
+	});
 }
 
 function installNode (cb) {
@@ -189,9 +188,9 @@ function installNode (cb) {
 
 	exec(`cd ${userPath} && brew install nvm && source $(brew --prefix nvm)/nvm.sh && echo "source $(brew --prefix nvm)/nvm.sh" >> ~/.profile && mkdir ~/.nvm && nvm install node && nvm use node`, (err, stdout, stderr) => {
 		console.log('Installed NVM, Node, and NPM', stdout);
-	});
 
-	if (cb && typeof cb === 'function') cb();
+        if (cb && typeof cb === 'function') cb();
+	});
 }
 
 
