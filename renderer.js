@@ -3,7 +3,7 @@ const { exec } = require('child_process');
 // const prompt = require('electron-prompt');
 const fixPath = require('fix-path');
 const os = require('os').platform();
-// const fs = require('graceful-fs');
+const fs = require('graceful-fs');
 fixPath();
 
 // Give us f12 and f5 to load devTools and Reload (Do this early in case something else spawns an error)
@@ -63,7 +63,7 @@ function installRedis (cb) {
 
 			$('h5').html('Installing Redis');
 
-			exec(`brew install redis`, (err, stdout, stderr) => {
+			exec(`brew install redis && brew tap homebrew/services && brew services start redis && ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents`, (err, stdout, stderr) => {
 				console.log('Installed Redis', stdout);
 			});
 		}
@@ -92,21 +92,50 @@ function installPython (cb) {
 
 
 function installPip (cb) {
-	console.log('Checking for Pip');
+    console.log('Checking for Pip');
 
-	exec(`pip --version`, (err, stdout, stderr) => {
-		if (!!stderr && stderr.indexOf('command not found') !== -1) {
-			console.log('stderr', stderr);
+    exec(`pip --version`, (err, stdout, stderr) => {
+        if (!!stderr && stderr.indexOf('command not found') !== -1) {
+            console.log('stderr', stderr);
 
-			$('h5').html('Installing PIP');
+            $('h5').html('Installing PIP');
 
-			exec(`sudo easy_install pip`, (err, stdout, stderr) => {
-				console.log('Installed Pip', stdout);
-			});
-		}
+            exec(`sudo easy_install pip`, (err, stdout, stderr) => {
+                console.log('Installed Pip', stdout);
+            });
+        }
 
-		if (cb && typeof cb === 'function') cb();
-	});
+        if (cb && typeof cb === 'function') cb();
+    });
+}
+
+function installVirtualEnv (cb) {
+    console.log('Checking for VirtualEnv');
+
+    exec(`virtualenv --version`, (err, stdout, stderr) => {
+        if (!!stderr && stderr.indexOf('command not found') !== -1) {
+            console.log('stderr', stderr);
+
+            $('h5').html('Installing VirtualEnv');
+
+            exec(`pip install virtualenv`, (err, stdout, stderr) => {
+                console.log('Installed VirtualEnv', stdout);
+            });
+        }
+
+        if (cb && typeof cb === 'function') cb();
+    });
+}
+
+
+function writeDotEnv (cb) {
+    fs.writeFileSync(userPath + '/redash-master/.env', JSON.stringify(manifest, null, 3), function (err) {
+        if (err) console.error(err);
+
+        console.log('Updated .env file: ', userPath + '/redash-master/.env');
+
+        if (cb && typeof cb === 'function') cb();
+    });
 }
 
 
@@ -124,7 +153,7 @@ function brewUpdate (cb) {
 function pipInstall (cb) {
     $('h5').html('Installing Redash');
 
-	exec(`cd ${userPath} && cd redash-master && pip install -r requirements.txt -r requirements_dev.txt`, (err, stdout, stderr) => {
+	exec(`cd ${userPath} && cd redash-master && virtualenv env && source env/bin/activate && pip install -r requirements.txt -r requirements_dev.txt`, (err, stdout, stderr) => {
 		if (stderr) console.log('stderr', stderr);
 
 		console.log('Reinstalled pip requirements', stdout);
@@ -200,16 +229,20 @@ function downloadRedash (cb) {
 			exec(`cd ${userPath} && curl https://github.com/getredash/redash/archive/master.zip -L -o redash-master.zip && unzip redash-master.zip`, (err, stdout, stderr) => {
 				console.log(stdout, stderr);
 
-				pipInstall(function () {
-					checkNode(function () {
-						checkNPM(function () {
-							npmInstall(function () {
-								initialSetup(function () {
-									if (cb && typeof cb === 'function') cb();
-								})
-							})
-						})
-					})
+                installVirtualEnv(function () {
+                    writeDotEnv(function () {
+                        pipInstall(function () {
+                            checkNode(function () {
+                                checkNPM(function () {
+                                    npmInstall(function () {
+                                        initialSetup(function () {
+                                            if (cb && typeof cb === 'function') cb();
+                                        })
+                                    })
+                                })
+                            })
+                        })
+                    })
 				})
 			});
 		} else {
