@@ -114,7 +114,7 @@ function installVirtualEnv (cb) {
 
     exec(`virtualenv --version`, (err, stdout, stderr) => {
         console.log('checked for virtualenv');
-        
+
         if (!!stderr && stderr.indexOf('command not found') !== -1) {
             console.log('stderr', stderr);
 
@@ -131,6 +131,8 @@ function installVirtualEnv (cb) {
 
 
 function writeDotEnv (cb) {
+    console.log('writing dotenv');
+    
     fs.writeFileSync(userPath + '/redash-master/.env', "REDASH_COOKIE_SECRET=verysecretkey\nREDASH_DATABASE_URL=postgresql://postgres@127.0.0.1/postgres\nREDASH_REDIS_URL=redis://127.0.0.1:6379/0", function (err) {
         if (err) console.error(err);
 
