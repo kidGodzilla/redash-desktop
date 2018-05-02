@@ -129,7 +129,7 @@ function installVirtualEnv (cb) {
 
 
 function writeDotEnv (cb) {
-    fs.writeFileSync(userPath + '/redash-master/.env', JSON.stringify(manifest, null, 3), function (err) {
+    fs.writeFileSync(userPath + '/redash-master/.env', "REDASH_COOKIE_SECRET=verysecretkey\nREDASH_DATABASE_URL=postgresql://postgres@127.0.0.1/postgres\nREDASH_REDIS_URL=redis://127.0.0.1:6379/0", function (err) {
         if (err) console.error(err);
 
         console.log('Updated .env file: ', userPath + '/redash-master/.env');
