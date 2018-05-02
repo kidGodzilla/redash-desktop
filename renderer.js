@@ -245,51 +245,8 @@ exec('cd ~ && pwd', (err, stdout, stderr) => {
 	if (stdout) userPath = stdout.trim().replace('\n', '');
 
 	console.log('Userpath:', userPath)
-
-
-// https://redash.io/help/open-source/dev-guide/setup
-
-// Installing Dependencies
-// PostgreSQL & Redis
-// Refer to the documentation of Python (2.7), PostgreSQL (9.3 or newer), Redis (2.8.3 or newer) and Node.js (v6 or newer) on how to install them in your environment. On macOS, you can use brew to install them. On Linux you can use your package manager, although need to make sure it installs recent enough versions.
-//
-// 	Python Packages
-// For development the minimum required packages to install are described in:
-//
-// requirements.txt
-// requirements_dev.txt
-// You install them with pip:
-//
-// pip install -r requirements.txt -r requirements_dev.txt
-// (We recommend installing them in a virtualenv. For using some data source types, you need to install additional dependencies from requirements_all_ds.txt.)
-//
-// Node.js Packages
-// Install all packages with:
-//
-// npm install
-// First time build assets:
-//
-// 	npm run build
-// Configuration
-// For development, in most cases the default configuration is enough. But if you need to adjust the database configuration, mail settings or any other setting, you do so with environment variables.
-//
-// 	To avoid having to export those variables manually, you can use a .env file and the bin/run helper script. By invoking any command with bin/run prefix, it will load your environment variables from the .env file and then run your command. For example:
-//
-// 	bin/run ./manage.py check_settings
-// Creating Database Tables
-// bin/run ./manage.py database create_tables
-
-
-// git clone redash-master to ~/redash-master/
-
-// brew update
-// brew install postgresql
-// brew install redis
-// brew install python@2
-// pip install -r requirements.txt -r requirements_dev.txt
-// npm install && npm run build
-// bin/run ./manage.py check_settings && bin/run ./manage.py database create_tables
-
+	
+	// https://redash.io/help/open-source/dev-guide/setup
 
 	// Check for all of the things
 	installBrew(function () {
