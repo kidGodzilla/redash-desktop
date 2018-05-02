@@ -28,10 +28,10 @@ function installBrew (cb) {
 
 			exec(`/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`, (err, stdout, stderr) => {
 				console.log('Installed BREW', stdout);
-			});
-		}
 
-		if (cb && typeof cb === 'function') cb();
+                if (cb && typeof cb === 'function') cb();
+			});
+		} else if (cb && typeof cb === 'function') cb();
 	});
 }
 
@@ -47,10 +47,10 @@ function installPostgres (cb) {
 
 			exec(`brew install postgresql`, (err, stdout, stderr) => {
 				console.log('Installed Postgres', stdout);
-			});
-		}
 
-		if (cb && typeof cb === 'function') cb();
+                if (cb && typeof cb === 'function') cb();
+			});
+		} else if (cb && typeof cb === 'function') cb();
 	});
 }
 
@@ -65,10 +65,10 @@ function installRedis (cb) {
 
 			exec(`brew install redis && brew tap homebrew/services && brew services start redis && ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents`, (err, stdout, stderr) => {
 				console.log('Installed Redis', stdout);
-			});
-		}
 
-		if (cb && typeof cb === 'function') cb();
+                if (cb && typeof cb === 'function') cb();
+			});
+		} else if (cb && typeof cb === 'function') cb();
 	});
 }
 
@@ -83,10 +83,10 @@ function installPython (cb) {
 
 			exec(`brew install python@2`, (err, stdout, stderr) => {
 				console.log('Installed Python', stdout);
-			});
-		}
 
-		if (cb && typeof cb === 'function') cb();
+                if (cb && typeof cb === 'function') cb();
+			});
+		} else if (cb && typeof cb === 'function') cb();
 	});
 }
 
@@ -102,10 +102,10 @@ function installPip (cb) {
 
             exec(`sudo easy_install pip`, (err, stdout, stderr) => {
                 console.log('Installed Pip', stdout);
-            });
-        }
 
-        if (cb && typeof cb === 'function') cb();
+                if (cb && typeof cb === 'function') cb();
+            });
+        } else if (cb && typeof cb === 'function') cb();
     });
 }
 
@@ -113,6 +113,8 @@ function installVirtualEnv (cb) {
     console.log('Checking for VirtualEnv');
 
     exec(`virtualenv --version`, (err, stdout, stderr) => {
+        console.log('checked for virtualenv');
+        
         if (!!stderr && stderr.indexOf('command not found') !== -1) {
             console.log('stderr', stderr);
 
@@ -120,6 +122,8 @@ function installVirtualEnv (cb) {
 
             exec(`pip install virtualenv`, (err, stdout, stderr) => {
                 console.log('Installed VirtualEnv', stdout);
+
+                if (cb && typeof cb === 'function') cb();
             });
         } else if (cb && typeof cb === 'function') cb();
     });
