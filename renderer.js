@@ -132,14 +132,25 @@ function installVirtualEnv (cb) {
 
 function writeDotEnv (cb) {
     console.log('writing dotenv');
-    
+
     fs.writeFileSync(userPath + '/redash-master/.env', "REDASH_COOKIE_SECRET=verysecretkey\nREDASH_DATABASE_URL=postgresql://postgres@127.0.0.1/postgres\nREDASH_REDIS_URL=redis://127.0.0.1:6379/0", function (err) {
         if (err) console.error(err);
 
         console.log('Updated .env file');
 
-        if (cb && typeof cb === 'function') cb();
+        if (cb && typeof cb === 'function') {
+            var cbc = cb;
+            cb = null;
+            cb();
+        }
     });
+
+    // Not sure why the file write sync callback isn't happening, but it never happens..
+    if (cb && typeof cb === 'function') {
+        var cbc = cb;
+        cb = null;
+        cb();
+    }
 }
 
 
