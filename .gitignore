@@ -1,0 +1,5 @@
+.idea
+.DS_Store
+node_modules
+Redash Desktop-darwin-x64
+Redash Desktop-darwin-x64/Redash Desktop.app

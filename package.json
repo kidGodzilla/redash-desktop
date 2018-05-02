@@ -1,0 +1,45 @@
+{
+  "name": "redash-desktop",
+  "productName": "Redash Desktop",
+  "version": "0.0.0",
+  "description": "My wicked app",
+  "license": "MIT",
+  "repository": "kidGodzilla/redashdesktop",
+  "author": {
+    "name": "kidGodzilla",
+    "email": "james.futhey@hbo.com",
+    "url": "hbo.com"
+  },
+  "scripts": {
+    "test": "xo",
+    "start": "electron .",
+    "build": "electron-packager ./ --platform=darwin --arch=x64 --prune --overwrite --icon icon.icns"
+  },
+  "files": [
+    "index.js",
+    "index.html",
+    "index.css"
+  ],
+  "keywords": [
+    "electron-app",
+    "electron"
+  ],
+  "dependencies": {
+    "electron-debug": "^1.0.0",
+    "fix-path": "^2.1.0",
+    "node": "^10.0.0"
+  },
+  "devDependencies": {
+    "devtron": "^1.1.0",
+    "electron": "^1.8.6",
+    "electron-packager": "^8.7.2",
+    "xo": "^0.16.0"
+  },
+  "xo": {
+    "esnext": true,
+    "envs": [
+      "node",
+      "browser"
+    ]
+  }
+}
