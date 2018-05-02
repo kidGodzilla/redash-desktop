@@ -112,7 +112,9 @@ function installPip (cb) {
 
 function brewUpdate (cb) {
 	exec(`brew update`, (err, stdout, stderr) => {
-		console.log('Updated Brew', stdout);
+        if (stderr) console.log('stderr', stderr);
+
+        console.log('Updated Brew', stdout);
 	});
 
 	if (cb && typeof cb === 'function') cb();
@@ -120,7 +122,11 @@ function brewUpdate (cb) {
 
 
 function pipInstall (cb) {
+    $('h5').html('Installing Redash');
+
 	exec(`cd ${userPath} && pip install -r requirements.txt -r requirements_dev.txt`, (err, stdout, stderr) => {
+		if (stderr) console.log('stderr', stderr);
+
 		console.log('Reinstalled pip requirements', stdout);
 	});
 
@@ -130,7 +136,9 @@ function pipInstall (cb) {
 
 function npmInstall (cb) {
 	exec(`npm install && npm run build`, (err, stdout, stderr) => {
-		console.log('Reinstalled npm packages', stdout);
+        if (stderr) console.log('stderr', stderr);
+
+        console.log('Reinstalled npm packages', stdout);
 	});
 
 	if (cb && typeof cb === 'function') cb();
