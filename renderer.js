@@ -124,7 +124,7 @@ function brewUpdate (cb) {
 function pipInstall (cb) {
     $('h5').html('Installing Redash');
 
-	exec(`cd ${userPath} && pip install -r requirements.txt -r requirements_dev.txt`, (err, stdout, stderr) => {
+	exec(`cd ${userPath} && cd redash-master && pip install -r requirements.txt -r requirements_dev.txt`, (err, stdout, stderr) => {
 		if (stderr) console.log('stderr', stderr);
 
 		console.log('Reinstalled pip requirements', stdout);
@@ -135,7 +135,7 @@ function pipInstall (cb) {
 
 
 function npmInstall (cb) {
-	exec(`npm install && npm run build`, (err, stdout, stderr) => {
+	exec(`cd ${userPath} && cd redash-master && npm install && npm run build`, (err, stdout, stderr) => {
         if (stderr) console.log('stderr', stderr);
 
         console.log('Reinstalled npm packages', stdout);
@@ -148,7 +148,7 @@ function npmInstall (cb) {
 function initialSetup (cb) {
 	$('h5').html('Bootstrapping Database');
 
-	exec(`cd ${userPath} && bin/run ./manage.py check_settings && bin/run ./manage.py database create_tables`, (err, stdout, stderr) => {
+	exec(`cd ${userPath} && cd redash-master && bin/run ./manage.py check_settings && bin/run ./manage.py database create_tables`, (err, stdout, stderr) => {
 		console.log('Initial Settings setup and database bootstrap', stdout);
 	});
 
@@ -243,6 +243,8 @@ function startRedash (cb) {
 // Get our user's path & stash it for later (fs cannot reliably use ~)
 exec('cd ~ && pwd', (err, stdout, stderr) => {
 	if (stdout) userPath = stdout.trim().replace('\n', '');
+
+	console.log('Userpath:', userPath)
 
 
 // https://redash.io/help/open-source/dev-guide/setup
