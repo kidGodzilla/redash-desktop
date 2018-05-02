@@ -140,16 +140,16 @@ function writeDotEnv (cb) {
 
         if (cb && typeof cb === 'function') {
             var cbc = cb;
-            cb = null;
-            cb();
+            cb = function(){};
+            cbc();
         }
     });
 
     // Not sure why the file write sync callback isn't happening, but it never happens..
     if (cb && typeof cb === 'function') {
         var cbc = cb;
-        cb = null;
-        cb();
+        cb = function(){};
+        cbc();
     }
 }
 
